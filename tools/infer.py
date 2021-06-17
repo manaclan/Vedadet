@@ -78,7 +78,7 @@ def main():
     ##############################################################
     path = Path('/content/imgs')
     for file in path.iterdir():
-        data = dict(img_info=dict(filename=imgname), img_prefix=None)
+        data = dict(img_info=dict(filename=str(file)), img_prefix=None)
 
         data = data_pipeline(data)
         data = collate([data], samples_per_gpu=1)
@@ -90,7 +90,7 @@ def main():
             data['img_metas'] = data['img_metas'][0].data
             data['img'] = data['img'][0].data
         result = engine.infer(data['img'], data['img_metas'])[0]
-        plot_result(result, imgname, class_names, outfp='/content/results/{}'.format(file.name))
+        plot_result(result, str(file), class_names, outfp='/content/results/{}'.format(file.name))
     ##############################################################
 
 if __name__ == '__main__':
